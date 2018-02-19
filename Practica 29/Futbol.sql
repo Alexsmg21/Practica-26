@@ -42,15 +42,46 @@ CREATE TABLE goles(
   CONSTRAINT goles_pk PRIMARY KEY (id_equipo_casa,id_equipo_fuera,minuto),
   CONSTRAINT goles_fk1 FOREIGN KEY (id_equipo_casa,id_equipo_fuera) REFERENCES partidos  ON DELETE CASCADE,
   CONSTRAINT goles_fk2 FOREIGN KEY (id_jugador) REFERENCES jugadores  ON DELETE CASCADE,
-  CONSTRAINT goles_ck CHECK (id_equipo_casa=id_equipo_fuera)
+  CONSTRAINT goles_ck CHECK (id_equipo_casa!=id_equipo_fuera)
 );
 
-ALTER TABLE equipos MODIFY aforo CONSTRAINT equipos_nn3 NOT NULL;
-ALTER TABLE equipos MODIFY estadio CONSTRAINT equipos_nn4 NOT NULL;
+DROP TABLE goles CASCADE CONSTRAINTS;
+DROP TABLE jugadores CASCADE CONSTRAINTS;
+DROP TABLE partidos CASCADE CONSTRAINTS;
+DROP TABLE equipos CASCADE CONSTRAINTS;
+
+ALTER TABLE equipos MODIFY (aforo CONSTRAINT equipos_nn3 NOT NULL,
+  estadio CONSTRAINT equipos_nn4 NOT NULL);
+--ALTER TABLE equipos MODIFY aforo CONSTRAINT equipos_nn3 NOT NULL;
+--ALTER TABLE equipos MODIFY estadio CONSTRAINT equipos_nn4 NOT NULL;
 
 
 
 ALTER TABLE equipos MODIFY (ano_fundacion DATE);
 
 ALTER TABLE jugadores DROP CONSTRAINT jugadores_nn;
+
+
+INSERT INTO equipos VALUES (1,'Cascorro F.C.','ARENERA','4000', TO_DATE('1/1/1961','dd/mm/yyyy'),'Cascorro de Arriba');
+INSERT INTO equipos VALUES (2,'Athletico Matalasleñas','Cerro Gálvez','1200', TO_DATE('12/03/1970','dd/mm/yyyy'),'Matalasleñas');
+
+
+
+
+
+
+
+INSERT INTO partidos  VALUES(1,2,to_date('5/11/2016','dd/mm/yyyy'),2,1,NULL);
+INSERT INTO jugadores  VALUES(1,'Amoribia',to_date('20/1/1990','dd/mm/yyyy'),1);
+INSERT INTO jugadores  VALUES(2,'Garcia',NULL,2);
+INSERT INTO jugadores  VALUES(3,'Pedrosa',to_date('12/9/1993','dd/mm/yyyy'),1);
+INSERT INTO goles VALUES(1,2,INTERVAL '23' MINUTE ,'Gol de falta directa',1);
+INSERT INTO goles VALUES(1,2,INTERVAL '40' MINUTE ,'Gol de penalti',2);
+INSERT INTO goles VALUES(1,2,INTERVAL '70' MINUTE ,'Gol Magistral',3);
+
+
+SELECT * FROM goles;
+
+
+
 
